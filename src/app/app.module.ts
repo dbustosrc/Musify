@@ -5,12 +5,16 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 
 import { UserEditComponent } from './components/user-edit.component';
+import { ArtistListComponent } from './components/artist-list.component';
 import { routing, appRoutingProviders} from './app.routing';
+import { HomeComponent } from './components/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    UserEditComponent
+    HomeComponent,
+    UserEditComponent,
+    ArtistListComponent
   ],
   imports: [
     BrowserModule,
