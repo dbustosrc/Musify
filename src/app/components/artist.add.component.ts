@@ -43,7 +43,7 @@ export class ArtistAddComponent implements OnInit{
                 this.artistAddMessage = 'No se ha podido añadir el artista';
             }else{
                 this.artist = response.artist;
-                //this._router.navigate(['/edit-artist'], response.artist._id);
+                this._router.navigate(['/edit-artist', response.artist._id]);
             }
         }, error => {
             var errorMessage = <any>error;

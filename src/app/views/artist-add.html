@@ -1,10 +1,15 @@
-<div class="col-lg-6">
+<div class="col-lg-6" *ngIf="identity && identity.role == 'ROLE_ADMIN'">
     <h1>{{titulo}}</h1>
 
     <form #formArtist="ngForm" (ngSubmit)="onSubmit()">
         <div *ngIf="artistAddMessage">
             <div class="alert alert-info">
                 {{artistAddMessage}}
+            </div>
+        </div>
+        <div *ngIf="artistEditMessage">
+            <div class="alert alert-info">
+                {{artistEditMessage}}
             </div>
         </div>
         <p>
@@ -21,6 +26,21 @@
                 La descripción es obligatoria.
             </span>
         </p>
+
+        <div *ngIf="is_edit">
+            <div class="artist_image_for_edit" *ngIf="artist.image && artist.image != 'null'">
+                <img src="{{url + 'get-image-artist/' + artist.image}}" />
+            </div>
+            <p>
+                <label>Imagen del artista</label>
+                <input type="file" placeholder="Subir imagen" (change)="fileChangeEvent($event)" />
+            </p>
+        </div>
+
         <input class="btn btn-success" type="submit" value="{{titulo}}" [disabled]="!formArtist.form.valid" />
     </form>
+</div>
+<div class="col-lg-6" *ngIf="!identity || identity.role != 'ROLE_ADMIN'">
+    <h1>Error</h1>
+    <p>Acceso no autorizado</p>
 </div>
