@@ -27,7 +27,12 @@
             </a>
             <div class="buttons" *ngIf="identity && identity.role == 'ROLE_ADMIN'">
                 <a [routerLink]="['/edit-artist', artist._id]" class="btn btn-sm btn-warning">Editar</a>
-                <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
+                <a (click)="onDeleteConfirm(artist._id)" class="btn btn-sm btn-danger">Eliminar</a>
+            </div>
+
+            <div class="deleteConfirmation" *ngIf="deleteConfirm == artist._id">
+                <a (click)="onDeleteArtist(artist._id)" class="btn btn-sm btn-danger">Eliminar</a>
+                <a (click)="onCancelDelete()" class="btn btn-sm btn-primary">Cancelar</a>
             </div>
         </div>
     </li>

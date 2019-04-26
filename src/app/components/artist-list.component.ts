@@ -21,6 +21,7 @@ export class ArtistListComponent implements OnInit{
     public nextPage;
     public prevPage;
     public artistListMessage: string;
+    public deleteConfirm: string;
 
     constructor(
         private _route: ActivatedRoute,
@@ -69,5 +70,30 @@ export class ArtistListComponent implements OnInit{
                     })
             }
         });
+    }
+
+    public onDeleteConfirm(artistId){
+        this.deleteConfirm = artistId
+    }
+
+    public onCancelDelete(){
+        this.deleteConfirm = null;
+    }
+
+    public onDeleteArtist(artistId){
+        this._artistService.deleteArtist(this.token, artistId).subscribe(
+            (response) => {
+                if(!response){
+                    this.artistListMessage = 'No se pudo obtener el artista para ser eliminado';
+                }else{
+                    this.getArtists();
+                }
+            }, (error) =>{
+                var errorMessage = <any>error;
+                if(errorMessage != null){
+                var body = JSON.parse(error._body);
+                this.artistListMessage = body.message;
+                }
+            })
     }
 }
