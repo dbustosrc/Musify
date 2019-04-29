@@ -19,7 +19,9 @@
 <ul class="artists-list" *ngIf="identity">
     <li *ngFor="let artist of artists" class="col-lg-3 artist-item">
         <div class="artist-image">
-            <img src="{{url + 'get-image-artist/' + artist.image}}" />
+            <a [routerLink]="['/artist', artist._id]">
+                <img src="{{url + 'get-image-artist/' + artist.image}}" />
+            </a>
         </div>
         <div class="artist-name">
             <a [routerLink]="['/artist', artist._id]">

@@ -1,27 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router'
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { GLOBAL } from '../services/global';
 import { UserService } from '../services/user.service';
-import { Artist } from '../models/artist';
-import { ArtistService } from '../services/artist.service';
 import { AlbumService } from '../services/album.service';
 import { Album } from '../models/album';
+import { Artist } from '../models/artist';
+import { ArtistService } from '../services/artist.service';
 
 @Component({
-    selector: 'artist-detail',
-    templateUrl: '../views/artist-detail.html',
+    selector: 'album-detail',
+    templateUrl: '../views/album-detail.html',
     providers: [UserService, ArtistService, AlbumService]
 })
 
-export class ArtistDetailComponent implements OnInit{
+export class AlbumDetailComponent implements OnInit{
     public titulo: string;
     public artist: Artist;
-    public albums: Album[];
+    public album: Album;
     public identity;
     public token: string;
     public url: string;
-    public artistDetailMessage: string;
+    public albumDetailMessage: string;
     public deleteConfirm: string;
 
     constructor(
@@ -31,7 +31,7 @@ export class ArtistDetailComponent implements OnInit{
         private _artistService: ArtistService,
         private _albumService: AlbumService
     ) {
-        this.titulo = 'Detalle de artista';
+        this.titulo = 'Detalle del álbum';
         this.identity = this._userService.getIdentity();
         this.token = this._userService.getToken();
         this.url = GLOBAL.url;
@@ -39,22 +39,36 @@ export class ArtistDetailComponent implements OnInit{
 
     public ngOnInit(){
         //Get artist from id
-        this.getArtist();
+        this.getAlbum();
     }
 
-    public getArtist(){
+    public getAlbum(){
         this._route.params.forEach((params: Params) => {
-            let artistId = params['id'];
+            let albumId = params['id'];
             
-            this._artistService.getArtist(this.token, artistId).subscribe(
+            this._albumService.getAlbum(this.token, albumId).subscribe(
                 response => {
-                    if(!response.artistFound){
-                        this._router.navigate(['/artists', 1]);
+                    
+                    if(!response.albumFound){
+                        this._router.navigate(['/artist', response.albumFound.artist]);
                     }else{
-                        this.artist = response.artistFound;
+                        this.album = response.albumFound;
+                        this._artistService.getArtist(this.token, response.albumFound.artist._id).subscribe(
+                            responseArtist => {
+                                if(responseArtist.artistFound){
+                                    this.artist = responseArtist.artistFound;
+                                }
+                            }, errorArtist => {
+                                var errorMessage = <any>errorArtist;
+                                if(errorMessage != null){
+                                var body = JSON.parse(errorArtist._body);
+                                this.albumDetailMessage = body.message;
+                                }
+                            }
+                        );
 
                         //Get albums artist
-                        this._albumService.getAlbums(this.token, response.artistFound._id).subscribe(
+                        /*this._albumService.getAlbums(this.token, response.artistFound._id).subscribe(
                             response => {
                                 if(!response.albums){
                                     this.artistDetailMessage = "No se pudo recuperar los albums del artista";
@@ -68,13 +82,13 @@ export class ArtistDetailComponent implements OnInit{
                                 this.artistDetailMessage = body.message;
                                 }
                             }
-                        )
+                        )*/
                     }
                 }, error => {
                     var errorMessage = <any>error;
                     if(errorMessage != null){
                     var body = JSON.parse(error._body);
-                    this.artistDetailMessage = body.message;
+                    this.albumDetailMessage = body.message;
                     }
                 }
             )
@@ -93,15 +107,15 @@ export class ArtistDetailComponent implements OnInit{
         this._albumService.deleteAlbum(this.token, albumId).subscribe(
             (response) => {
                 if(!response){
-                    this.artistDetailMessage = 'No se pudo obtener el álbum para ser eliminado';
+                    this.albumDetailMessage = 'No se pudo obtener el álbum para ser eliminado';
                 }else{
-                    this.getArtist();
+                    this.getAlbum();
                 }
             }, (error) =>{
                 var errorMessage = <any>error;
                 if(errorMessage != null){
                 var body = JSON.parse(error._body);
-                this.artistDetailMessage = body.message;
+                this.albumDetailMessage = body.message;
                 }
             })
     }

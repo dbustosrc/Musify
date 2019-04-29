@@ -138,7 +138,8 @@ html, body{
     color: white;
 }
 
-#artist-head-card .image{
+#artist-head-card .image,
+#album-head-card .image{
     width: 150px;
     height: 150px;
     overflow: hidden;
@@ -147,7 +148,8 @@ html, body{
     position: relative;
 }
 
-#artist-head-card .image img{
+#artist-head-card .image img,
+#album-head-card .image img{
     height: 150px;
     position: absolute;
     left: 50%;

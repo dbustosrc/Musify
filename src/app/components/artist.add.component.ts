@@ -34,7 +34,6 @@ export class ArtistAddComponent implements OnInit{
     }
 
     public ngOnInit(){
-        console.log('Añadir artista');
     }
 
     public onSubmit(){

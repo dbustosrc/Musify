@@ -9,6 +9,7 @@ import { ArtistEditComponent } from './components/artist-edit.component';
 import { ArtistDetailComponent } from './components/artist.detail.component';
 import { AlbumAddComponent } from './components/album-add.component';
 import { AlbumEditComponent } from './components/album-edit.component';
+import { AlbumDetailComponent } from './components/album-detail.component';
 
 const appRoutes: Routes = [
     {path: '', component: HomeComponent},
@@ -17,7 +18,8 @@ const appRoutes: Routes = [
     {path: 'edit-artist/:id', component: ArtistEditComponent},
     {path: 'artist/:id', component: ArtistDetailComponent},
     {path: 'new-album/:artist', component: AlbumAddComponent},
-    {path: 'edit-album/:id', component:AlbumEditComponent},
+    {path: 'edit-album/:id', component: AlbumEditComponent},
+    {path: 'album/:id', component: AlbumDetailComponent},
     {path: 'profile', component: UserEditComponent},
     {path: '**', component: HomeComponent}
 ];

@@ -6,12 +6,12 @@ import { UserService } from '../services/user.service';
 import { Artist } from '../models/artist';
 import { ArtistService } from '../services/artist.service';
 import { Album } from '../models/album';
-import { AlbumtService } from '../services/album.service';
+import { AlbumService } from '../services/album.service';
 
 @Component({
     selector: 'album-add',
     templateUrl: '../views/album-add.html',
-    providers: [UserService, ArtistService, AlbumtService]
+    providers: [UserService, ArtistService, AlbumService]
 })
 
 export class AlbumAddComponent implements OnInit{
@@ -27,7 +27,7 @@ export class AlbumAddComponent implements OnInit{
         private _router: Router,
         private _route: ActivatedRoute,
         private _userService: UserService,
-        private _albumService: AlbumtService
+        private _albumService: AlbumService
     ) {
         this.titulo = 'Añadir álbum';
         this.identity = this._userService.getIdentity();
@@ -37,7 +37,6 @@ export class AlbumAddComponent implements OnInit{
     }
 
     public ngOnInit(){
-        console.log('Añadir álbum');
     }
 
     public onSubmit(){

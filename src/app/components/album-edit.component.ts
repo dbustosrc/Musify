@@ -6,13 +6,13 @@ import { UserService } from '../services/user.service';
 import { Artist } from '../models/artist';
 import { ArtistService } from '../services/artist.service';
 import { UploadService } from '../services/upload.service';
-import { AlbumtService } from '../services/album.service';
+import { AlbumService } from '../services/album.service';
 import { Album } from '../models/album';
 
 @Component({
     selector: 'album-edit',
     templateUrl: '../views/album-add.html',
-    providers: [UserService, ArtistService, UploadService, AlbumtService]
+    providers: [UserService, ArtistService, UploadService, AlbumService]
 })
 
 export class AlbumEditComponent implements OnInit{
@@ -31,7 +31,7 @@ export class AlbumEditComponent implements OnInit{
         private _router: Router,
         private _userService: UserService,
         private _artistService: ArtistService,
-        private _albumService: AlbumtService,
+        private _albumService: AlbumService,
         private _uploadService: UploadService
     ) {
         this.titulo = 'Editar álbum';
@@ -52,7 +52,6 @@ export class AlbumEditComponent implements OnInit{
             let albumId = params['id'];
 
             this._albumService.updateAlbum(this.token, albumId, this.album).subscribe(response =>{
-                console.log(response);
                 if(!response.albumUpdated){
                     this.albumEditMessage = 'No se ha podido editar el álbum';
                 }else{
@@ -90,7 +89,6 @@ export class AlbumEditComponent implements OnInit{
             
             this._albumService.getAlbum(this.token, albumId).subscribe(
                 response => {
-                    console.log(response);
                     if(!response.albumFound){
                         this._router.navigate(['/artist/', this.album.artist]);
                     }else{
@@ -109,6 +107,5 @@ export class AlbumEditComponent implements OnInit{
 
     public fileChangeEvent(fileInput: any){
         this.filesToUpload = <Array<File>>fileInput.target.files;
-        console.log(this.filesToUpload);
     }
 }

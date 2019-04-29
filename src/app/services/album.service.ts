@@ -7,7 +7,7 @@ import { Artist } from '../models/artist';
 import { Album } from '../models/album';
 
 @Injectable()
-export class AlbumtService{
+export class AlbumService{
     public url: string;
 
     constructor( private _http: Http){

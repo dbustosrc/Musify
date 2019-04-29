@@ -35,7 +35,6 @@ export class UserEditComponent implements OnInit{
     }
 
     public ngOnInit(){
-        console.log('user-edit');
     }
 
     public onSubmit(){
@@ -75,7 +74,6 @@ export class UserEditComponent implements OnInit{
 
     public fileChangeEvent(fileInput: any){
         this.filesToUpload = <Array<File>>fileInput.target.files;
-        console.log(this.filesToUpload);
     }
 
     public makeFileRequest(url: string, params: Array<string>, files: Array<File>){
