@@ -4,11 +4,12 @@ import { Router, ActivatedRoute, Params } from '@angular/router'
 import { GLOBAL } from '../services/global';
 import { UserService } from '../services/user.service';
 import { Song } from '../models/song';
+import { SongService } from '../services/song.service';
 
 @Component({
     selector: 'song-add',
     templateUrl: '../views/song-add.html',
-    providers: [UserService]
+    providers: [UserService, SongService]
 })
 
 export class SongAddComponent implements OnInit{
@@ -22,7 +23,8 @@ export class SongAddComponent implements OnInit{
     constructor(
         private _router: Router,
         private _route: ActivatedRoute,
-        private _userService: UserService
+        private _userService: UserService,
+        private _songService: SongService
     ) {
         this.titulo = 'Añadir canción';
         this.identity = this._userService.getIdentity();
@@ -35,25 +37,25 @@ export class SongAddComponent implements OnInit{
     }
 
     public onSubmit(){
-        /*this._route.params.forEach(element => {
-            let artistId = element['artist'];
-            this.album.artist = artistId;
+        this._route.params.forEach(element => {
+            let albumId = element['album'];
+            this.song.album = albumId;
         });
         
-        this._albumService.addAlbum(this.token, this.album).subscribe(response =>{
-            if(!response.album){
-                this.albumAddMessage = 'No se ha podido añadir el álbum';
+        this._songService.addSong(this.token, this.song).subscribe(response =>{
+            if(!response.song){
+                this.songAddMessage = 'No se ha podido añadir la canción';
             }else{
-                this.album = response.album;
-                this._router.navigate(['/edit-album', response.album._id]);
+                this.song = response.song;
+                this._router.navigate(['/edit-song', response.song._id]);
             }
         }, error => {
             var errorMessage = <any>error;
             if(errorMessage != null){
             var body = JSON.parse(error._body);
-            this.albumAddMessage = body.message;
+            this.songAddMessage = body.message;
             }
-        });*/
+        });
 
     }
 }
