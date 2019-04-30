@@ -1,0 +1,34 @@
+<div class="col-lg-6" *ngIf="identity && identity.role == 'ROLE_ADMIN'">
+    <h1>{{titulo}}</h1>
+
+    <form #formSong="ngForm" (ngSubmit)="onSubmit()">
+        <div *ngIf="songAddMessage">
+            <div class="alert alert-info">
+                {{songAddMessage}}
+            </div>
+        </div>
+        <div *ngIf="songEditMessage">
+            <div class="alert alert-info">
+                {{songEditMessage}}
+            </div>
+        </div>
+        <p>
+            <label>Nombre</label>
+            <input class="form-control" type="text" #name="ngModel" name="name" [(ngModel)]="song.name" required />
+            <span *ngIf="!name.valid && name.touched">
+                El nombre es obligatorio.
+            </span>
+        </p>
+        <p>
+            <label>Duración</label>
+            <input class="form-control" type="text" #duration="ngModel" name="duration" [(ngModel)]="song.duration" required />
+            <span *ngIf="!duration.valid && duration.touched">
+                La duración es obligatoria.
+            </span>
+        </p>
+    </form>
+</div>
+<div class="col-lg-6" *ngIf="!identity || identity.role != 'ROLE_ADMIN'">
+    <h1>Error</h1>
+    <p>Acceso no autorizado</p>
+</div>
