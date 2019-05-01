@@ -8,7 +8,7 @@
             <h1>{{album.title}}</h1>
             <div class="album-artist" *ngIf="artist && artist._id">
                 <a [routerLink]="['/artist', artist._id]">
-                    <p>{{artist.name}}</p>
+                    <p><strong>{{artist.name}}</strong></p>
                 </a>
             </div>
             <p class="year">{{album.year}}</p>
@@ -23,28 +23,31 @@
         
         <div id="gallery-songs" *ngIf="songs">
             <!--Songs list-->
-            <!--<ul class="albums-list" *ngIf="identity">
-                <li *ngFor="let album of albums" class="col-lg-3 album-item">
-                    <div class="album-image">
+            <ul class="songs-list" *ngIf="identity">
+                <li *ngFor="let song of songs" class="song-item">
+                    <!--<div class="album-image">
                         <a [routerLink]="['/album', album._id]">
                             <img src="{{url + 'get-image-album/' + album.image}}" />
                         </a>
-                    </div>
-                    <div class="album-title">
-                            <a [routerLink]="['/album', album._id]">
-                                {{album.title}}
-                            </a>
-                            <div class="buttons" *ngIf="identity && identity.role == 'ROLE_ADMIN'">
-                                <a [routerLink]="['/edit-album', album._id]" class="btn btn-sm btn-warning">Editar</a>
-                                <a (click)="onDeleteConfirm(album._id)" class="btn btn-sm btn-danger">Eliminar</a>
-                            </div>
-                
-                            <div class="deleteConfirmation" *ngIf="deleteConfirm == album._id">
-                                <a (click)="onDeleteAlbum(album._id)" class="btn btn-sm btn-danger">Eliminar</a>
-                                <a (click)="onCancelDelete()" class="btn btn-sm btn-primary">Cancelar</a>
-                            </div>
+                    </div>-->
+                    <div class="song-title">
+                        <a class="btn btn-success" (click)="playSong(song)">
+                            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                        </a>
+                        {{song.number + '. ' + song.name + ' - ' + song.duration}}
+                        
+                        <div class="buttons" *ngIf="identity && identity.role == 'ROLE_ADMIN'">
+                            <a [routerLink]="['/edit-song', song._id]" class="btn btn-sm btn-warning">Editar</a>
+                            <a (click)="onDeleteConfirm(song._id)" class="btn btn-sm btn-danger">Eliminar</a>
                         </div>
+            
+                        <div class="deleteConfirmation songDeleteConfirmation" *ngIf="deleteConfirm == song._id">
+                            <a (click)="onDeleteAlbum(song._id)" class="btn btn-sm btn-danger">Eliminar</a>
+                            <a (click)="onCancelDelete()" class="btn btn-sm btn-primary">Cancelar</a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
                 </li>
-            </ul>-->
+            </ul>
         </div>
     </div>

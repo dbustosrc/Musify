@@ -4,20 +4,23 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { GLOBAL } from '../services/global';
 import { UserService } from '../services/user.service';
 import { AlbumService } from '../services/album.service';
+import { Song } from '../models/song';
 import { Album } from '../models/album';
 import { Artist } from '../models/artist';
 import { ArtistService } from '../services/artist.service';
+import { SongService } from '../services/song.service';
 
 @Component({
     selector: 'album-detail',
     templateUrl: '../views/album-detail.html',
-    providers: [UserService, ArtistService, AlbumService]
+    providers: [UserService, ArtistService, AlbumService, SongService]
 })
 
 export class AlbumDetailComponent implements OnInit{
     public titulo: string;
     public artist: Artist;
     public album: Album;
+    public songs: Song[];
     public identity;
     public token: string;
     public url: string;
@@ -29,7 +32,8 @@ export class AlbumDetailComponent implements OnInit{
         private _router: Router,
         private _userService: UserService,
         private _artistService: ArtistService,
-        private _albumService: AlbumService
+        private _albumService: AlbumService,
+        private _songService: SongService
     ) {
         this.titulo = 'Detalle del álbum';
         this.identity = this._userService.getIdentity();
@@ -67,22 +71,22 @@ export class AlbumDetailComponent implements OnInit{
                             }
                         );
 
-                        //Get albums artist
-                        /*this._albumService.getAlbums(this.token, response.artistFound._id).subscribe(
+                        //Get albums songs
+                        this._songService.getSongs(this.token, response.albumId).subscribe(
                             response => {
-                                if(!response.albums){
-                                    this.artistDetailMessage = "No se pudo recuperar los albums del artista";
+                                if(!response.songs){
+                                    this.albumDetailMessage = "No se pudo recuperar los albums del artista";
                                 }else{
-                                    this.albums = response.albums;
+                                    this.songs = response.songs;
                                 }
                             }, error => {
                                 var errorMessage = <any>error;
                                 if(errorMessage != null){
                                 var body = JSON.parse(error._body);
-                                this.artistDetailMessage = body.message;
+                                this.albumDetailMessage = body.message;
                                 }
                             }
-                        )*/
+                        )
                     }
                 }, error => {
                     var errorMessage = <any>error;
@@ -95,19 +99,19 @@ export class AlbumDetailComponent implements OnInit{
         });
     }
 
-    public onDeleteConfirm(albumId){
-        this.deleteConfirm = albumId
+    public onDeleteConfirm(songId){
+        this.deleteConfirm = songId
     }
 
     public onCancelDelete(){
         this.deleteConfirm = null;
     }
 
-    public onDeleteAlbum(albumId){
-        this._albumService.deleteAlbum(this.token, albumId).subscribe(
+    public onDeleteSong(songId){
+        this._songService.deleteSong(this.token, songId).subscribe(
             (response) => {
                 if(!response){
-                    this.albumDetailMessage = 'No se pudo obtener el álbum para ser eliminado';
+                    this.albumDetailMessage = 'No se pudo obtener la canción para ser eliminada';
                 }else{
                     this.getAlbum();
                 }
@@ -118,5 +122,21 @@ export class AlbumDetailComponent implements OnInit{
                 this.albumDetailMessage = body.message;
                 }
             })
+    }
+
+    public playSong(song){
+        let songPlayer = JSON.stringify(song);
+        let filePath = this.url + 'get-file-song/' + song.file;
+        let imagePath = this.url + 'get-image-album/' + song.album.image;
+
+        localStorage.setItem('currentSong', songPlayer);
+        
+        document.getElementById('mp3-source').setAttribute("src", filePath);
+        (document.getElementById('player') as any).load();
+        (document.getElementById('player') as any).play();
+
+        document.getElementById('play-title-song').innerHTML = song.name;
+        document.getElementById('play-artist-song').innerHTML = song.album.artist.name;
+        document.getElementById('play-album-image').setAttribute("src", imagePath);
     }
 }
